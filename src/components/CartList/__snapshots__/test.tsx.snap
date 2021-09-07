@@ -199,13 +199,3 @@ exports[`<CartList /> should render the cart list 1`] = `
   </div>
 </main>
 `;
-
-exports[`<CartList /> should render the heading 1`] = `
-<main
-  class=""
->
-  <h1>
-    CartList
-  </h1>
-</main>
-`;
