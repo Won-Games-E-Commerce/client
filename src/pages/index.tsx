@@ -10,11 +10,14 @@ export default function Index(props: HomeTemplateProps) {
 
 export async function getStaticProps() {
   const apolloClient = initializeApollo()
+  const TODAY = new Date().toISOString().slice(0, 10) // 2021-01-27
 
   const {
     data: { banners, newGames, upcomingGames, freeGames, sections }
   } = await apolloClient.query<QueryHome>({
-    query: QUERY_HOME
+    query: QUERY_HOME,
+    variables: { date: TODAY },
+    fetchPolicy: 'no-cache' // garantir sempre dado novo na geração do estático!
   })
 
   return {

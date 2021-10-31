@@ -26,6 +26,7 @@ export function useQueryGames(
 export const QUERY_GAME_BY_SLUG = gql`
   query QueryGameBySlug($slug: String!) {
     games(where: { slug: $slug }) {
+      id
       name
       short_description
       description
