@@ -1,7 +1,6 @@
 import Game, { GameTemplateProps } from 'templates/Game'
 
 import { useRouter } from 'next/router'
-import { ApolloClient } from '@apollo/client'
 import { initializeApollo } from 'utils/apollo'
 import { QueryGames, QueryGamesVariables } from 'graphql/generated/QueryGames'
 import { QUERY_GAMES, QUERY_GAME_BY_SLUG } from 'graphql/queries/games'
@@ -18,6 +17,7 @@ import {
   QueryUpcomingVariables
 } from 'graphql/generated/QueryUpcoming'
 import { QUERY_UPCOMING } from 'graphql/queries/upcoming'
+import { getImageUrl } from 'utils/getImageUrl'
 
 const apolloClient = initializeApollo()
 
@@ -71,7 +71,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   return {
     revalidate: 60,
     props: {
-      cover: `http://localhost:1337${game.cover?.src}`,
+      slug: params?.slug,
+      cover: `${getImageUrl(game.cover?.src)}`,
       gameInfo: {
         id: game.id,
         title: game.name,
@@ -79,7 +80,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         description: game.short_description
       },
       gallery: game.gallery.map((image) => ({
-        src: `http://localhost:1337${image.src}`,
+        src: `${getImageUrl(image.src)}`,
         label: image.label
       })),
       description: game.description,
@@ -87,7 +88,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         developer: game.developers[0].name,
         releaseDate: game.release_date,
         platforms: game.platforms.map((platform) => platform.name),
-        publisher: game.publisher.name,
+        publisher: game.publisher?.name,
         rating: game.rating,
         genres: game.categories.map((category) => category.name)
       },
